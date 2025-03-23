@@ -18,7 +18,20 @@ def main():
     fs_mp3s  = gridfs.GridFS(db_mp3s)
     
     # create a connection to Rabbitmq
-    connection = pika.BlockingConnection(pika.URLParameters("amqp://guest:guest@rabbitmq:5672/"))
+    # connection = pika.BlockingConnection(pika.URLParameters("amqp://guest:guest@rabbitmq:5672/"))
+    # channel = connection.channel()
+    parameters = pika.ConnectionParameters(
+        host="rabbitmq",  
+        port=5672,  
+        credentials=pika.PlainCredentials("guest", "guest"),
+        heartbeat=30,
+        blocked_connection_timeout=300,
+        connection_attempts=10,
+        retry_delay=5,
+        socket_timeout=120
+    )
+
+    connection = pika.BlockingConnection(parameters)
     channel = connection.channel()
     
     # define a callback function

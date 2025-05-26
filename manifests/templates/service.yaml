@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ include "project.name" . }}-svc
+  labels:
+    app: {{ .Values.commonLabels.app }}
+    tier: {{ .Values.commonLabels.tier }}
+spec:
+  type: {{ .Values.service.type }}
+  selector:
+    app: {{ .Values.selectorLabels.app }}
+  {{- with .Values.service.ports }}
+  ports:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}

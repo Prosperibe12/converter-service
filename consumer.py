@@ -9,7 +9,11 @@ def main():
     the mp3 queue for consumption by the notification service. 
     """
     # create a connection to the mongodb service
-    client = MongoClient("mongodb://mongodb-service", 27017)
+    try:
+        client = MongoClient(f"mongodb://{os.environ.get('MONGODB_HOST')}", 27017)
+    except Exception as e:
+        print(f"Failed to connect to MongoDB: {e}")
+        sys.exit(1)
     db_videos = client.videos
     db_mp3s = client.mp3s
     
@@ -21,8 +25,8 @@ def main():
     # connection = pika.BlockingConnection(pika.URLParameters("amqp://guest:guest@rabbitmq:5672/"))
     # channel = connection.channel()
     parameters = pika.ConnectionParameters(
-        host="rabbitmq",  
-        port=5672,  
+        host=os.environ.get("RABBITMQ_HOST"),  
+        port=int(os.environ.get("RABBITMQ_PORT")), 
         credentials=pika.PlainCredentials("guest", "guest"),
         heartbeat=30,
         blocked_connection_timeout=300,

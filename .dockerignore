@@ -2,3 +2,4 @@ venv
 manifests
 ReadMe.md
 .gitignore
+.env

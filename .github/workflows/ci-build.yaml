@@ -28,4 +28,4 @@ jobs:
         with:
           platforms: linux/amd64,linux/arm64
           push: true
-          tags: ${{ secrets.DOCKER_USERNAME }}/converter-service:latest
+          tags: ${{ vars.DOCKER_USERNAME }}/converter-service:latest
